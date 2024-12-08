@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        /* Body */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #e2e8f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+    
+        /* Header Section */
+        header {
+            background: linear-gradient(to right, #a90e3a, #900e18);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+        }
+    
+        /* Main Content */
+        .main-content {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+    
+        .main-content:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+    
+        /* Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+    
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+    
+        input,
+        select,
+        button {
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+    
+        input:focus,
+        select:focus {
+            border-color: #931e28;
+            box-shadow: 0 0 10px rgba(166, 10, 23, 0.3);
+        }
+    
+        /* Button */
+        button {
+            background: linear-gradient(to right, #3c00ff, #ff0015);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+    
+        button:hover {
+            background: linear-gradient(to right, #ff4757, #ff6a95);
+            transform: scale(1.05);
+        }
+    
+        /* Results Section */
+        .results-section {
+            margin-top: 20px;
+        }
+    
+        .results-title {
+            font-size: 1.7rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff4757;
+        }
+    
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+    
+        .result-card {
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+    
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+    
+        .result-image {
+            max-width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 2px solid #ddd;
+        }
+    
+        .result-info {
+            padding: 10px;
+        }
+    
+        .result-score {
+            font-size: 1rem;
+            color: #555;
+            font-weight: bold;
+        }
+    
+        /* Footer Section */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            border-top: 2px solid #ff4757;
+        }
+    
+        footer p {
+            margin: 0;
+        }
+    
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+    
+            form {
+                gap: 10px;
+            }
+    
+            .results-title {
+                font-size: 1.5rem;
+            }
+    
+            .result-card {
+                height: 200px;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            header {
+                font-size: 1.5rem;
+            }
+    
+            .results-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>Image Search</h1>
+    </header>
+    <main class="main-content">
+        <form method="POST" enctype="multipart/form-data">
+            <label for="image_query">Image Query:</label>
+            <input type="file" id="image_query" name="image_query">
+
+            <label for="text_query">Text Query:</label>
+            <input type="text" id="text_query" name="text_query" placeholder="e.g., green trees, red lights ">
+
+            <label for="hybrid_weight">Hybrid Weight </label>
+            <input type="number" id="hybrid_weight" name="hybrid_weight" min="0" max="1" step="0.1" value="0.5">
+
+            <label for="query_type">Query Type:</label>
+            <select id="query_type" name="query_type">
+                <option value="text">Text Query</option>
+                <option value="image">Image Query</option>
+                <option value="hybrid">Hybrid Query</option>
+            </select>
+
+            <label for="use_pca">
+                <input type="checkbox" id="use_pca" name="use_pca"> Use PCA Embeddings
+            </label>
+
+            <button type="submit">Search</button>
+        </form>
+
+        {% if results %}
+        <section class="results-section">
+            <h2 class="results-title">Search Results</h2>
+            <div class="results-grid">
+                {% for file_name, score in results %}
+                <div class="result-card">
+                    <img src="{{ image_folder + '/' + file_name }}" class="result-image" alt="Result Image">
+                    <div class="result-info">
+                        <p class="result-score">Score: {{ "%.4f"|format(score) }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>
+
