@@ -50,15 +50,6 @@ The application features a **user-friendly graphical interface** built using a s
 ### Part 4: Weighting of Queries (Text + Image)
 - If both a text and image query are provided, the user can specify a weight between **0.0 and 1.0**. The weight controls how much influence the text query has relative to the image query, allowing for flexible search capabilities.
 
-## Demo Video
-
-A **1-2 minute demo video** was created to:
-- Demonstrate the key functionality of the image search system.
-- Show how to input both text and image queries and adjust the query weight.
-- Explain the different options for similarity calculation (CLIP vs PCA-based embeddings).
-
-The demo video is available on my **portfolio website** and linked in the **README** of the GitHub repository.
-
 This code is available in my **GitHub repository**.
 
 ## Requirements
