@@ -1,25 +1,79 @@
-# Assignment 10: Image Search
---------------------
+# Image Search: Simplified Version of Google Image Search
 
-Video: https://youtu.be/-cNJ8nmU19A
+## Project Overview
 
-**Goal:** Implement a simplified version of Google Image Search.
+This project implements a **simplified version of Google Image Search** with a graphical user interface (GUI). The application allows users to search for images based on text queries, image queries, or a combination of both. The goal was to return the top 5 most relevant images from a database, ranked by their similarity to the user's query, and display similarity scores. This project also allowed for the use of different embedding methods (CLIP or PCA-based embeddings) to enhance the search capabilities.
 
-This is a GUI assignment. Please set up a GitHub repo like previous assignments. There is no GUI template, but we encourage you to reuse code from earlier homeworks.
+## Key Features
 
-**Deliverables:**
- - A GitHub repo containing all the code necessary to reproduce your results, including a `Makefile`.
- - A 1-2 minute video demonstrating the requirements.
+### 1. **Text-based Image Search**
+- The user can input a **text query**.
+- Upon clicking the search button, the system displays the **top 5 relevant images** from the database, along with their **similarity scores**.
 
-**Requirements:**
- - The user can input a text query. After hitting the search button, the user should see the top 5 most relevant images from the database along with their similarity scores.
- - The user can upload an image query. Again, return the top 5 relevant images along with similarity scores.
- - The user can upload both an image and text query. In this case, the user can enter a value between 0.0 and 1.0 indicating how much to weigh the text query relative to the image query. Again, return the top 5 relevant images along with similarity scores.
- - The user can choose to use embeddings corresponding to the first k principle components instead of CLIP embeddings for image queries. You can reuse work from this week's lab.
+### 2. **Image-based Search**
+- The user can **upload an image** as a query.
+- The system returns the **top 5 relevant images** based on **image similarity**, along with similarity scores.
 
-**Please complete the Python notebook as a first step. You don't need to hand this in, but it walks you through implementation steps.**
+### 3. **Combined Search (Text + Image)**
+- The user can **upload both an image and a text query**.
+- The system allows the user to specify a weight (between **0.0 and 1.0**) for how much to weigh the text query relative to the image query.
+- The top 5 relevant images are displayed, with similarity scores adjusted according to the specified weight.
 
-**Please download these files:**
-- [`coco_images_resized.zip`](https://drive.google.com/file/d/1eNQIUlIKqOg-3e205YIMyUnfTTaOIspP/view?usp=sharing): The image files.
-- [`image_embeddings.pickle`](https://drive.google.com/file/d/1M0LodmtqPW-WfEUT50iAx9kAqBUo4CWm/view?usp=sharing): The image embeddings.
-- [`house.jpg`](https://drive.google.com/file/d/1uXzWnWgGIqwgEGWbWYY2xUtYXVVRvhBd/view?usp=sharing): An example image.
+### 4. **Choice of Embeddings**
+- The system supports **CLIP embeddings** (Contrastive Language-Image Pretraining), which are commonly used for semantic search.
+- Alternatively, the user can choose to use embeddings based on the first **k principal components** (PCA-based embeddings), which can be used to reduce the dimensionality of image data for faster similarity matching.
+
+### 5. **GUI Implementation**
+The application features a **user-friendly graphical interface** built using a suitable Python GUI framework (e.g., Tkinter or PyQt). The GUI includes:
+- A text input box for text queries.
+- An option to upload an image file for image queries.
+- A combined input for both text and image queries.
+- A slider to adjust the weighting between text and image queries.
+- A display section for showing the top 5 relevant images along with their similarity scores.
+
+## Project Workflow
+
+### Part 1: Preprocessing
+- **Image Data:** The images used in the search database were resized and stored in a zip file (`coco_images_resized.zip`).
+- **Embeddings:** The **image embeddings** were precomputed and stored in a pickle file (`image_embeddings.pickle`). These embeddings represent each image in the database as a high-dimensional vector, which is used for similarity comparison.
+- **Test Image:** An example image (`house.jpg`) was provided for testing purposes.
+
+### Part 2: GUI and Functionality
+- The GUI was built to allow users to interact with the system by inputting text queries, uploading images, and adjusting query weights for combined search.
+- The **search functionality** uses the precomputed embeddings to compare the query (whether text or image) to all images in the database. It then ranks the images based on similarity.
+
+### Part 3: Similarity Calculation
+- **Text Query:** Text queries are embedded using a pre-trained model (such as CLIP) to obtain a vector representation of the text.
+- **Image Query:** Image queries are embedded using either the CLIP model or PCA-based embeddings.
+- The similarity between the query and database images is calculated using cosine similarity or other suitable distance metrics, and the top 5 most relevant images are displayed.
+
+### Part 4: Weighting of Queries (Text + Image)
+- If both a text and image query are provided, the user can specify a weight between **0.0 and 1.0**. The weight controls how much influence the text query has relative to the image query, allowing for flexible search capabilities.
+
+## Demo Video
+
+A **1-2 minute demo video** was created to:
+- Demonstrate the key functionality of the image search system.
+- Show how to input both text and image queries and adjust the query weight.
+- Explain the different options for similarity calculation (CLIP vs PCA-based embeddings).
+
+The demo video is available on my **portfolio website** and linked in the **README** of the GitHub repository.
+
+This code is available in my **GitHub repository**.
+
+## Requirements
+
+- **Text query input** and **image query upload** functionality.
+- **Combined query search** with adjustable weights between text and image.
+- Option to use **CLIP** or **PCA-based embeddings** for image search.
+- **GUI** with easy-to-use controls and image display.
+
+## Conclusion
+
+This project allowed me to implement a fully functional image search system with a GUI. It involved:
+- Using **embeddings** for efficient similarity-based image search.
+- Creating a **user-friendly interface** for text and image queries.
+- Allowing users to experiment with different embeddings and query weights to fine-tune search results.
+
+This project enhanced my skills in **image processing**, **embeddings**, **similarity calculation**, and **GUI development** while providing a practical tool for searching images based on text and image queries.
+
